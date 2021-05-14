@@ -5,7 +5,7 @@
   margin-bottom: 1rem;
 }
 .bold {
-  padding-left: 1rem;
+  padding-left: 0rem;
   font-weight: 700;
 }
 .blue {
@@ -13,4 +13,7 @@
 }
 .red {
   background-color: lightcoral;
+}
+.green {
+  background-color: salmon;
 }
