@@ -13,8 +13,8 @@ def Loader():
     f = open("step.txt", "w")
     f.write("0")
     f.close()
-    tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-large")
-    model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-large")
+    tokenizer = AutoTokenizer.from_pretrained("microsoft/DialoGPT-small")
+    model = AutoModelForCausalLM.from_pretrained("microsoft/DialoGPT-small")
     return tokenizer, model
 
 tokenizer, model = Loader()
