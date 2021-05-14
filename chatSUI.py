@@ -25,15 +25,34 @@ def Namer(name):
 
 tokenizer, model = Loader()
 
-cont0 = st.beta_container()
-col03, col01, col02, col04 = cont0.beta_columns([0.15, 1, 0.15, 0.15])
+app_state = st.experimental_get_query_params()
+if app_state == {}:
+    with st.form(key='columns_in_form'):
+        cont0 = st.empty()
+        cont0.beta_container()
+        col03, col01, col02, col04 = cont0.beta_columns([0.15, 1, 0.20, 0.15])
 
-nInput = col01.text_input("Your name please:")
-nInput = nInput.lower().replace(" ","")
-context = col02.selectbox("context",('2', '3', '4', '5'))
-context = int(context)-1
+        nInputobj = col01.empty()
+        nInput = nInputobj.text_input("Your name please:")
+
+        contextobj = col02.empty()
+        context = contextobj.selectbox("context", ('2', '3', '4', '5'))
+        context = int(context) - 1
+
+        submitted = col02.form_submit_button('Submit')
+
+
+
+app_state = st.experimental_get_query_params()
+
+if app_state!={}:
+    nInput = app_state['nInput'][0]
+    context = int(app_state['context'][0])
 
 if nInput != "":
+    nInput = nInput.lower().replace(" ", "")
+    st.experimental_set_query_params(**{"nInput" : nInput, "context" : str(context)})
+
     if nInput not in os.listdir():
         os.system(f"mkdir {nInput}")
     st.markdown("---")
@@ -49,9 +68,6 @@ if nInput != "":
 
     cont1 = st.beta_container()
     col3, col1, col2, col4 = cont1.beta_columns([0.15, 1, 0.125, 0.15])
-    # col2.button("OK")
-    # uName = Namer(nInput)
-    # st.info(f"Hello {uName}")
     col2.write("")
     col2.write("")
 
@@ -89,7 +105,7 @@ if nInput != "":
         os.system(f'''echo AI to {nInput} : "{AIOut}"''')
         os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-        if step >= context:
+        if step >= context+1:
             step = 0
         else:
             step += 1
