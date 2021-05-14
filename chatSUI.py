@@ -1,13 +1,57 @@
+import datetime
+import time
+
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch
-import pickle, os
+import pickle, os, sqlite3
 import streamlit as st
 from load_css import local_css
+
+st.set_page_config(
+    page_title="Jarvis",
+    page_icon="👽",
+    layout="centered",
+    initial_sidebar_state="auto",
+)
 
 st.markdown(f"<div style='font-size: 50px;'><center><b>Talk with Jarvis</b></center></div>", unsafe_allow_html=True)
 st.markdown(f"<div style='font-size: 12px;'><center>By <a href='https://github.com/cmdev007/'><span class='highlight green'><span class='bold'>cMDev007</span></span></a></center></div>", unsafe_allow_html=True)
 
 local_css("style.css")
+
+############### SQLITTE ###############
+
+def create_table():
+    conn = sqlite3.connect('messages.db')
+    c = conn.cursor()
+    c.execute("CREATE TABLE IF NOT EXISTS msgdata(unix REAL, datestamp TEXT, uname TEXT, hitext TEXT, aitext TEXT)")
+    c.close()
+    conn.close()
+
+
+def data_entry(unix, datestamp, uname, hitext, aitext):
+    hitext = hitext.replace("'", "''")
+    aitext = aitext.replace("'", "''")
+    uname = uname.replace("'", "''")
+    conn = sqlite3.connect('messages.db')
+    c = conn.cursor()
+    c.execute(f"INSERT INTO msgdata VALUES('{unix}', '{datestamp}', '{uname}', '{hitext}', '{aitext}')")
+    conn.commit()
+    c.close()
+    conn.close()
+
+def read_data(uname):
+    uname = uname.replace("'", "''")
+    conn = sqlite3.connect('messages.db')
+    c = conn.cursor()
+    c.execute(f"SELECT * FROM msgdata WHERE uname = '{uname}'")
+    data = c.fetchall()
+    return data
+
+############## SQLITE ################
+
+if "messages.db" not in os.listdir():
+    create_table()
 
 @st.cache(allow_output_mutation=True)
 def Loader():
@@ -74,6 +118,8 @@ if nInput != "":
     # encode the new user input, add the eos_token and return a tensor in Pytorch
     hInput = col1.text_input("Type:")
     if col2.button("Send"):
+        uTime = time.time()
+        tStamp = datetime.datetime.fromtimestamp(uTime).strftime('%HH-%MM : %d-%m-%Y')
         HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{hInput}</span></div>"
         col1.markdown(HI, unsafe_allow_html=True)
         os.system(f'''echo "{nInput} : {hInput}"''')
@@ -103,7 +149,25 @@ if nInput != "":
         col1.write("")
         col1.markdown(AI, unsafe_allow_html=True)
         os.system(f'''echo AI to {nInput} : "{AIOut}"''')
+
+        histData = read_data(nInput)
+        for i in range(len(histData)):
+            buffData = histData[len(histData)-i-1]
+            col1.markdown("---")
+
+            # col1.write("")
+            HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{buffData[3]}</span></div>"
+            col1.markdown(HI, unsafe_allow_html=True)
+
+            AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{buffData[4]}</span></div>"
+            col1.write("")
+            col1.markdown(AI, unsafe_allow_html=True)
+
+        data_entry(uTime, tStamp, nInput, hInput, AIOut)
         os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        print(read_data(nInput))
+        os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
 
         if step >= context+1:
             step = 0

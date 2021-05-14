@@ -1,3 +1,9 @@
+[browser]
+
+# Whether to send usage statistics to Streamlit.
+# Default: true
+gatherUsageStats = false
+
 [theme]
 primaryColor="#f6f333"
 backgroundColor="#2d0922"
