@@ -87,7 +87,7 @@ if nInput != "":
         col1.write("")
         col1.markdown(AI, unsafe_allow_html=True)
         os.system(f"echo AI : {AIOut}")
-        print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         if step >= context:
             step = 0
