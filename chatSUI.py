@@ -60,7 +60,7 @@ if nInput != "":
     if col2.button("Send"):
         HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{hInput}</span></div>"
         col1.markdown(HI, unsafe_allow_html=True)
-        os.system(f"echo {nInput} : {hInput}")
+        os.system(f'''echo "{nInput} : {hInput}"''')
         new_user_input_ids = tokenizer.encode(hInput + tokenizer.eos_token, return_tensors='pt')
 
         # append the new user input tokens to the chat history
@@ -86,7 +86,7 @@ if nInput != "":
         AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{AIOut}</span></div>"
         col1.write("")
         col1.markdown(AI, unsafe_allow_html=True)
-        os.system(f"echo AI : {AIOut}")
+        os.system(f'''echo AI to {nInput} : "{AIOut}"''')
         os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
         if step >= context:
