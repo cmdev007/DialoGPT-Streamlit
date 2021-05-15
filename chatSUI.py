@@ -14,7 +14,8 @@ st.set_page_config(
     initial_sidebar_state="auto",
 )
 
-st.markdown(f"<div style='font-size: 50px;'><center><b>Talk with Jarvis</b></center></div>", unsafe_allow_html=True)
+placeTitle = st.empty()
+placeTitle.markdown(f"<div style='font-size: 50px;;color:grey;font-family:orbitron;'><center><b>Talk with Jarvis</b></center></div>", unsafe_allow_html=True)
 st.markdown(f"<div style='font-size: 12px;'><center>By <a href='https://github.com/cmdev007/'><span class='highlight green'><span class='bold'>cMDev007</span></span></a></center></div>", unsafe_allow_html=True)
 
 local_css("style.css")
@@ -94,6 +95,10 @@ if app_state!={}:
     context = int(app_state['context'][0])
 
 if nInput != "":
+    placeTitle.markdown(f"<div style='font-size:30px;color:grey;font-family:orbitron;'>\
+    <center><b>Talk with Jarvis</b></center></div>",
+                        unsafe_allow_html=True)
+
     nInput = nInput.lower().replace(" ", "")
     st.experimental_set_query_params(**{"nInput" : nInput, "context" : str(context)})
 
@@ -163,18 +168,21 @@ if nInput != "":
         f.write(str(step))
         f.close()
 
+    cont2 = st.beta_container()
+    col23, col21, col22 = cont2.beta_columns([0.13, 1, 0.10])
+
     histData = read_data(nInput)
     for i in range(len(histData)):
         buffData = histData[len(histData) - i - 1]
-        col1.markdown("---")
+        col21.markdown("---")
 
         # col1.write("")
         HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{buffData[3]}</span></div>"
-        col1.markdown(HI, unsafe_allow_html=True)
+        col21.markdown(HI, unsafe_allow_html=True)
 
         AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{buffData[4]}</span></div>"
-        col1.write("")
-        col1.markdown(AI, unsafe_allow_html=True)
+        col21.write("")
+        col21.markdown(AI, unsafe_allow_html=True)
 
 hide_streamlit_style = """
             <style>
