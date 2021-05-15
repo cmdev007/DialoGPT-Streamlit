@@ -120,8 +120,8 @@ if nInput != "":
     if col2.button("Send"):
         uTime = time.time()
         tStamp = datetime.datetime.fromtimestamp(uTime).strftime('%HH-%MM : %d-%m-%Y')
-        HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{hInput}</span></div>"
-        col1.markdown(HI, unsafe_allow_html=True)
+        # HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{hInput}</span></div>"
+        # col1.markdown(HI, unsafe_allow_html=True)
         os.system(f'''echo "{nInput} : {hInput}"''')
         new_user_input_ids = tokenizer.encode(hInput + tokenizer.eos_token, return_tensors='pt')
 
@@ -145,23 +145,10 @@ if nInput != "":
         AIOut = (
             "{}".format(tokenizer.decode(chat_history_ids[:, bot_input_ids.shape[-1]:][0], skip_special_tokens=True)))
 
-        AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{AIOut}</span></div>"
-        col1.write("")
-        col1.markdown(AI, unsafe_allow_html=True)
+        # AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{AIOut}</span></div>"
+        # col1.write("")
+        # col1.markdown(AI, unsafe_allow_html=True)
         os.system(f'''echo AI to {nInput} : "{AIOut}"''')
-
-        histData = read_data(nInput)
-        for i in range(len(histData)):
-            buffData = histData[len(histData)-i-1]
-            col1.markdown("---")
-
-            # col1.write("")
-            HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{buffData[3]}</span></div>"
-            col1.markdown(HI, unsafe_allow_html=True)
-
-            AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{buffData[4]}</span></div>"
-            col1.write("")
-            col1.markdown(AI, unsafe_allow_html=True)
 
         data_entry(uTime, tStamp, nInput, hInput, AIOut)
         os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
@@ -178,6 +165,18 @@ if nInput != "":
         f.write(str(step))
         f.close()
 
+    histData = read_data(nInput)
+    for i in range(len(histData)):
+        buffData = histData[len(histData) - i - 1]
+        col1.markdown("---")
+
+        # col1.write("")
+        HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{buffData[3]}</span></div>"
+        col1.markdown(HI, unsafe_allow_html=True)
+
+        AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{buffData[4]}</span></div>"
+        col1.write("")
+        col1.markdown(AI, unsafe_allow_html=True)
 
 hide_streamlit_style = """
             <style>
