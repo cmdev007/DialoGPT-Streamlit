@@ -180,7 +180,7 @@ if nInput != "":
         HI = f"<div><span class='highlight blue'><span class='bold'>You: </span>{buffData[3]}</span></div>"
         col21.markdown(HI, unsafe_allow_html=True)
 
-        AI = f"<div><span class='highlight red'><span class='bold'>AI: </span>{buffData[4]}</span></div>"
+        AI = f"<div align='right'><span class='highlight red'><span class='bold'>AI: </span>{buffData[4]}</span></div>"
         col21.write("")
         col21.markdown(AI, unsafe_allow_html=True)
 
