@@ -152,8 +152,6 @@ if nInput != "":
 
         data_entry(uTime, tStamp, nInput, hInput, AIOut)
         os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        print(read_data(nInput))
-        os.system("echo ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
 
         if step >= context+1:
