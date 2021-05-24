@@ -2,9 +2,11 @@ import datetime
 import time
 from transformers import BlenderbotSmallTokenizer, BlenderbotSmallForConditionalGeneration
 import torch
+from streamlit_lottie import st_lottie
 import pickle, os, sqlite3
 import streamlit as st
 from load_css import local_css
+import json
 
 st.set_page_config(
     page_title="Jarvis",
@@ -15,7 +17,7 @@ st.set_page_config(
 
 placeTitle = st.empty()
 placeTitle.markdown(f"<div style='font-size: 50px;;color:grey;font-family:orbitron;'><center><b>Talk with Jarvis</b></center></div>", unsafe_allow_html=True)
-st.markdown(f"<div style='font-size: 12px;'><center>By <a href='https://github.com/cmdev007/'><span class='highlight green'><span class='bold'>cMDev007</span></span></a></center></div>", unsafe_allow_html=True)
+st.markdown(f"<div style='font-size: 12px;'><center>By <a href='https://github.com/cmdev007/'><span class='highlight green'><span class='bold'>Preet</span></span></a></center></div>", unsafe_allow_html=True)
 
 local_css("style.css")
 
@@ -58,7 +60,7 @@ def Loader():
     f = open("step.txt", "w")
     f.write("0")
     f.close()
-    mname = 'facebook/blenderbot_small-90M'
+    mname = 'facebook/blenderbot-90M'
     model = BlenderbotSmallForConditionalGeneration.from_pretrained(mname)
     tokenizer = BlenderbotSmallTokenizer.from_pretrained(mname)
     return tokenizer, model
@@ -85,7 +87,10 @@ if app_state == {}:
         context = int(context) - 1
 
         submitted = col02.form_submit_button('Submit')
-
+    # f = open("animations/face-scan.json")
+    # jData = json.load(f)
+    # f.close()
+    # st_lottie(jData, quality="high",width=100)
 
 
 app_state = st.experimental_get_query_params()
