@@ -2,7 +2,7 @@ import datetime
 import time
 from transformers import BlenderbotSmallTokenizer, BlenderbotSmallForConditionalGeneration
 import torch
-from streamlit_lottie import st_lottie
+#from streamlit_lottie import st_lottie
 import pickle, os, sqlite3
 import streamlit as st
 from load_css import local_css
